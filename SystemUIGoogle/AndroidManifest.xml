@@ -70,6 +70,9 @@
     <protected-broadcast android:name="com.google.android.apps.privacy.wildlife.WIFI_STATE_CHANGED"/>
     <uses-permission android:name="com.google.android.ambientindication.permission.AMBIENT_INDICATION"/>
 
+    <!-- Ambient pulse event -->
+    <protected-broadcast android:name="com.android.systemui.doze.pulse" />
+
     <application>
         <provider
             android:name="com.android.systemui.keyguard.KeyguardSliceProvider"
