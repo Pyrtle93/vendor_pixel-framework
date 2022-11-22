@@ -87,7 +87,7 @@ class BatteryDefenderNotification {
             z = true;
         }
         boolean isFullyCharged = PowerUtils.isFullyCharged(intent);
-        Log.d(TAG, "isPlugged: " + z2 + " | isOverheated: " + z + " | defenderEnabled: " + mDefenderEnabled + " | isCharged: " + isFullyCharged);
+        if (DEBUG) Log.d(TAG, "isPlugged: " + z2 + " | isOverheated: " + z + " | defenderEnabled: " + mDefenderEnabled + " | isCharged: " + isFullyCharged);
         if (isFullyCharged && mPostNotificationVisible) {
             cancelPostNotification();
         }
