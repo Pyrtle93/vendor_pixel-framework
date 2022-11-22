@@ -26,6 +26,8 @@ class BatteryInfoBroadcast {
     private final Context mContext;
     private final PowerManager mPowerManager;
 
+    private static final boolean DEBUG = false;
+
     BatteryInfoBroadcast(Context context) {
         mContext = context;
         mPowerManager = context.getSystemService(PowerManager.class);
@@ -45,7 +47,7 @@ class BatteryInfoBroadcast {
             boolean isPowerSaveMode = mPowerManager.isPowerSaveMode();
             newIntent.putExtra("battery_save", isPowerSaveMode);
             mContext.sendBroadcastAsUser(newIntent, UserHandle.ALL);
-            Log.d("BatteryInfoBroadcast", "onReceive: " + action + " isPowerSaveMode: " + isPowerSaveMode);
+            if (DEBUG) Log.d("BatteryInfoBroadcast", "onReceive: " + action + " isPowerSaveMode: " + isPowerSaveMode);
         } else if (action.equals("android.bluetooth.adapter.action.STATE_CHANGED") || action.equals("android.bluetooth.hearingaid.profile.action.CONNECTION_STATE_CHANGED") || action.equals("android.bluetooth.headset.profile.action.CONNECTION_STATE_CHANGED") || action.equals("android.bluetooth.device.action.BATTERY_LEVEL_CHANGED") || action.equals("android.bluetooth.adapter.action.CONNECTION_STATE_CHANGED") || action.equals("android.bluetooth.device.action.ALIAS_CHANGED") || action.equals("android.bluetooth.a2dp.profile.action.CONNECTION_STATE_CHANGED")) {
             Intent newIntent = createIntent("PNW.bluetoothStatusChanged");
             newIntent.putExtra(action, intent);

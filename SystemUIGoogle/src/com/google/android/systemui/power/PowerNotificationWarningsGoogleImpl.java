@@ -45,6 +45,8 @@ public final class PowerNotificationWarningsGoogleImpl extends PowerNotification
     private BatteryDefenderNotification mBatteryDefenderNotification;
     private BatteryInfoBroadcast mBatteryInfoBroadcast;
 
+    private static final boolean DEBUG = false;
+
     public PowerNotificationWarningsGoogleImpl(Context context, ActivityStarter activityStarter,
                                                BroadcastSender broadcastSender, Lazy<BatteryController> batteryControllerLazy,
                                                DialogLaunchAnimator dialogLaunchAnimator, UiEventLogger uiEventLogger,
@@ -58,7 +60,7 @@ public final class PowerNotificationWarningsGoogleImpl extends PowerNotification
                 if (intent == null || intent.getAction() == null) {
                     return;
                 }
-                Log.d("PowerNotificationWarningsGoogleImpl", "onReceive: " + intent.getAction());
+                if (DEBUG) Log.d("PowerNotificationWarningsGoogleImpl", "onReceive: " + intent.getAction());
                 mBatteryInfoBroadcast.notifyBatteryStatusChanged(intent);
                 mBatteryDefenderNotification.dispatchIntent(intent);
                 mAdaptiveChargingNotification.dispatchIntent(intent);
