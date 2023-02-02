@@ -31,7 +31,7 @@ import java.util.NoSuchElementException;
 import vendor.google.google_battery.V1_1.IGoogleBattery;
 
 public class AdaptiveChargingManager {
-    private static final boolean DEBUG = Log.isLoggable("AdaptiveChargingManager", 3);
+    private static final boolean DEBUG = false;
     Context mContext;
 
     public AdaptiveChargingManager(Context context) {
@@ -49,7 +49,7 @@ public class AdaptiveChargingManager {
             }
             return service;
         } catch (RemoteException | NoSuchElementException e) {
-            Log.e("AdaptiveChargingManager", "failed to get Google Battery HAL: ", e);
+            if (DEBUG) Log.e("AdaptiveChargingManager", "failed to get Google Battery HAL: ", e);
             return null;
         }
     }
@@ -78,7 +78,7 @@ public class AdaptiveChargingManager {
             try {
                 iGoogleBattery.unlinkToDeath(deathRecipient);
             } catch (RemoteException e) {
-                Log.e("AdaptiveChargingManager", "unlinkToDeath failed: ", e);
+                if (DEBUG) Log.e("AdaptiveChargingManager", "unlinkToDeath failed: ", e);
             }
         }
     }
@@ -119,7 +119,7 @@ public class AdaptiveChargingManager {
                 z = true;
             }
         } catch (RemoteException e) {
-            Log.e("AdaptiveChargingManager", "setChargingDeadline failed: ", e);
+            if (DEBUG) Log.e("AdaptiveChargingManager", "setChargingDeadline failed: ", e);
         }
         destroyHalInterface(initHalInterface, null);
         return z;
@@ -154,7 +154,7 @@ public class AdaptiveChargingManager {
                 }
             });
         } catch (RemoteException e) {
-            Log.e("AdaptiveChargingManager", "Failed to get Adaptive Chaging status: ", e);
+            if (DEBUG) Log.e("AdaptiveChargingManager", "Failed to get Adaptive Chaging status: ", e);
             destroyHalInterface(initHalInterface, deathRecipient);
             adaptiveChargingStatusReceiver.onDestroyInterface();
         }
