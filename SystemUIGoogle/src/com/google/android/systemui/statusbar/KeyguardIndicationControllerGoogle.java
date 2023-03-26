@@ -143,7 +143,7 @@ public class KeyguardIndicationControllerGoogle extends KeyguardIndicationContro
             }
 
             @Override
-            public void onReceiveStatus(String stage, int seconds) {
+            public void onReceiveStatus(int seconds, String stage) {
                 boolean wasActive = mAdaptiveChargingActive;
                 mAdaptiveChargingActive = AdaptiveChargingManager.isActive(stage, seconds);
                 long currentEstimation = mEstimatedChargeCompletion;
