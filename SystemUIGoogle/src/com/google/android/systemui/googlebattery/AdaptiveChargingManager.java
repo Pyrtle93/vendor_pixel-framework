@@ -49,7 +49,7 @@ public class AdaptiveChargingManager {
     public interface AdaptiveChargingStatusReceiver {
         void onDestroyInterface();
 
-        void onReceiveStatus(String stage, int seconds);
+        void onReceiveStatus(int seconds, String stage);
     }
 
     private Locale getLocale() {
@@ -130,7 +130,7 @@ public class AdaptiveChargingManager {
         }
         try {
             ChargingStage stage = googBatteryIntf.getChargingStageAndDeadline();
-            adaptiveChargingStatusReceiver.onReceiveStatus(stage.stage, stage.deadlineSecs);
+            adaptiveChargingStatusReceiver.onReceiveStatus(stage.deadlineSecs, stage.stage);
         } catch (RemoteException | ParcelFormatException e) {
             Log.e("AdaptiveChargingManager", "Failed to get Adaptive Charging status: ", e);
         }
