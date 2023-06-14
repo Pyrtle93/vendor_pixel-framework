@@ -24,24 +24,24 @@ import javax.inject.Inject;
 import dagger.Lazy;
 
 public class GoogleServices extends VendorServices {
-    private final Context mContext;
     private final ArrayList<Object> mServices;
     private final CentralSurfaces mCentralSurfaces;
     private final AlarmManager mAlarmManager;
     private final UiEventLogger mUiEventLogger;
     private final Lazy<ServiceConfigurationGoogle> mServiceConfigurationGoogle;
     private final Lazy<ColumbusServiceWrapper> mColumbusServiceLazy;
+    private final Context mContext;
 
     @Inject
     public GoogleServices(Context context, AlarmManager alarmManager, CentralSurfaces centralSurfaces, UiEventLogger uiEventLogger, Lazy<ServiceConfigurationGoogle> serviceConfigurationGoogleLazy, Lazy<ColumbusServiceWrapper> columbusServiceWrapperLazy) {
         super();
-        mContext = context;
         mServices = new ArrayList<>();
         mAlarmManager = alarmManager;
         mCentralSurfaces = centralSurfaces;
         mUiEventLogger = uiEventLogger;
         mServiceConfigurationGoogle = serviceConfigurationGoogleLazy;
         mColumbusServiceLazy = columbusServiceWrapperLazy;
+        mContext = context;
     }
 
     @Override

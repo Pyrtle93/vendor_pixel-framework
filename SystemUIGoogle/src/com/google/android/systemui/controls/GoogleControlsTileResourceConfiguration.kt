@@ -25,7 +25,7 @@ class GoogleControlsTileResourceConfigurationImpl @Inject constructor(
     }
 
     override fun getTileTitleId(): Int {
-        if (componentName.getPackageName().equals(GOOGLE_HOME_PACKAGE)) {
+      if (componentName.getPackageName().equals(GOOGLE_HOME_PACKAGE)) {
             return R.string.home_controls_tile_title
         }
         return R.string.quick_controls_title

@@ -29,8 +29,8 @@ import android.graphics.drawable.DrawableWrapper;
 import android.media.MediaMetadata;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -48,6 +48,7 @@ import com.android.systemui.animation.Interpolators;
 import com.android.systemui.doze.DozeReceiver;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.statusbar.NotificationMediaManager;
+import com.android.systemui.shade.NotificationPanelViewController;
 import com.android.systemui.statusbar.phone.CentralSurfaces;
 import com.android.systemui.util.wakelock.DelayedWakeLock;
 import com.android.systemui.util.wakelock.WakeLock;
@@ -104,6 +105,9 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
             public void onInflated(View view) {
                 mTextView = (TextView) findViewById(R.id.ambient_indication_text);
                 mIconView = (ImageView) findViewById(R.id.ambient_indication_icon);
+                if (mTextView == null || mIconView == null || mContext == null) {
+                    return;
+                }
                 mAmbientMusicAnimation = mContext.getDrawable(R.anim.audioanim_animation);
                 mAmbientMusicNoteIcon = mContext.getDrawable(R.drawable.ic_music_note);
                 mReverseChargingAnimation = mContext.getDrawable(R.anim.reverse_charging_animation);
@@ -194,6 +198,9 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
         boolean updatePill = true;
         mIndicationTextMode = 1;
         CharSequence text = mAmbientMusicText;
+        if (mTextView == null || mIconView == null) {
+            return;
+        }
         boolean textVisible = mTextView.getVisibility() == View.VISIBLE;
         Drawable icon = textVisible ? mAmbientMusicNoteIcon : mAmbientMusicAnimation;
         if (mAmbientIconOverride != null) {
@@ -295,7 +302,6 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
             mBottomMarginPx = dimensionPixelSize;
             ((FrameLayout.LayoutParams) getLayoutParams()).bottomMargin = mBottomMarginPx;
         }
-        
         mCentralSurfaces.getNotificationPanelViewController().setAmbientIndicationTop(getTop(), mTextView.getVisibility() == View.VISIBLE);
     }
 

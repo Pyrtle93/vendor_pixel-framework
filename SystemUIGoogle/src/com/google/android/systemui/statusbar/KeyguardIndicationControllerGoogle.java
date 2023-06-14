@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2022 The PixelExperience Project
- * Copyright (C) 2022 StatixOS
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,32 +17,34 @@
 package com.google.android.systemui.statusbar;
 
 import android.app.admin.DevicePolicyManager;
+import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.BatteryManager;
 import android.os.Looper;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.provider.DeviceConfig;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.internal.app.IBatteryStats;
 import com.android.internal.widget.LockPatternUtils;
+import com.android.systemui.keyguard.domain.interactor.AlternateBouncerInteractor;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
 import com.android.keyguard.logging.KeyguardLogger;
 import com.android.settingslib.fuelgauge.BatteryStatus;
 import com.android.systemui.R;
-import com.android.systemui.biometrics.AuthController;
 import com.android.systemui.biometrics.FaceHelpMessageDeferral;
 import com.android.systemui.broadcast.BroadcastDispatcher;
 import com.android.systemui.dagger.SysUISingleton;
 import com.android.systemui.dagger.qualifiers.Background;
 import com.android.systemui.dagger.qualifiers.Main;
 import com.android.systemui.dock.DockManager;
+import com.android.systemui.biometrics.AuthController;
 import com.android.systemui.keyguard.KeyguardIndication;
 import com.android.systemui.keyguard.ScreenLifecycle;
 import com.android.systemui.plugins.FalsingManager;
@@ -51,10 +52,11 @@ import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.statusbar.KeyguardIndicationController;
 import com.android.systemui.statusbar.phone.KeyguardBypassController;
 import com.android.systemui.statusbar.policy.KeyguardStateController;
+import com.android.systemui.tuner.TunerService;
 import com.android.systemui.util.DeviceConfigProxy;
 import com.android.systemui.util.concurrency.DelayableExecutor;
+import com.android.systemui.util.time.DateFormatUtil;
 import com.android.systemui.util.wakelock.WakeLock;
-
 import com.google.android.systemui.googlebattery.AdaptiveChargingManager;
 
 import java.text.NumberFormat;
@@ -64,40 +66,23 @@ import javax.inject.Inject;
 
 @SysUISingleton
 public class KeyguardIndicationControllerGoogle extends KeyguardIndicationController {
-
-    private boolean mAdaptiveChargingActive;
-    private boolean mAdaptiveChargingEnabledInSettings;
-    @VisibleForTesting
-    private AdaptiveChargingManager mAdaptiveChargingManager;
-    @VisibleForTesting
-    private AdaptiveChargingManager.AdaptiveChargingStatusReceiver mAdaptiveChargingStatusReceiver;
-    private int mBatteryLevel;
+    private final IBatteryStats mBatteryInfo;
     private final BroadcastDispatcher mBroadcastDispatcher;
     private final BroadcastReceiver mBroadcastReceiver;
     private final Context mContext;
     private final DeviceConfigProxy mDeviceConfig;
+    private final TunerService mTunerService;
+    @VisibleForTesting
+    protected AdaptiveChargingManager mAdaptiveChargingManager;
+    @VisibleForTesting
+    protected AdaptiveChargingManager.AdaptiveChargingStatusReceiver mAdaptiveChargingStatusReceiver;
+    private boolean mAdaptiveChargingActive;
+    private boolean mAdaptiveChargingEnabledInSettings;
+    private int mBatteryLevel;
     private long mEstimatedChargeCompletion;
     private boolean mInited;
     private boolean mIsCharging;
     private KeyguardUpdateMonitorCallback mUpdateMonitorCallback;
-
-    protected class GoogleKeyguardCallback extends KeyguardIndicationController.BaseKeyguardCallback {
-        protected GoogleKeyguardCallback() {
-            super();
-        }
-
-        @Override
-        public final void onRefreshBatteryInfo(BatteryStatus batteryStatus) {
-            super.onRefreshBatteryInfo(batteryStatus);
-            mIsCharging = batteryStatus.status == BatteryManager.BATTERY_STATUS_CHARGING;
-            mBatteryLevel = batteryStatus.level;
-            if (mIsCharging) {
-                triggerAdaptiveChargingStatusUpdate();
-            } else {
-                mAdaptiveChargingActive = false;
-            }
-        }
-    }
 
     @Inject
     public KeyguardIndicationControllerGoogle(
@@ -121,15 +106,15 @@ public class KeyguardIndicationControllerGoogle extends KeyguardIndicationContro
             KeyguardBypassController keyguardBypassController,
             AccessibilityManager accessibilityManager,
             FaceHelpMessageDeferral faceHelpMessageDeferral,
+            TunerService tunerService,
             DeviceConfigProxy deviceConfigProxy,
-            KeyguardLogger keyguardLogger) {
-        super(context, mainLooper, wakeLockBuilder, keyguardStateController, statusBarStateController, keyguardUpdateMonitor,
-            dockManager, broadcastDispatcher, devicePolicyManager, iBatteryStats, userManager, executor, bgExecutor,
-            falsingManager, authController, lockPatternUtils, screenLifecycle, keyguardBypassController,
-            accessibilityManager, faceHelpMessageDeferral, keyguardLogger);
+            KeyguardLogger keyguardLogger,
+            AlternateBouncerInteractor alternateBouncerInteractor,
+            AlarmManager alarmManager) {
+        super(context, mainLooper, wakeLockBuilder, keyguardStateController, statusBarStateController, keyguardUpdateMonitor, dockManager, broadcastDispatcher, devicePolicyManager, iBatteryStats, userManager, executor, bgExecutor, falsingManager, authController, lockPatternUtils, screenLifecycle, keyguardBypassController, accessibilityManager, faceHelpMessageDeferral, keyguardLogger, alternateBouncerInteractor, alarmManager);
         mBroadcastReceiver = new BroadcastReceiver() {
             @Override
-            public final void onReceive(Context context, Intent intent) {
+            public void onReceive(Context context2, Intent intent) {
                 if ("com.google.android.systemui.adaptivecharging.ADAPTIVE_CHARGING_DEADLINE_SET".equals(intent.getAction())) {
                     triggerAdaptiveChargingStatusUpdate();
                 }
@@ -141,26 +126,57 @@ public class KeyguardIndicationControllerGoogle extends KeyguardIndicationContro
             }
 
             @Override
-            public void onReceiveStatus(int seconds, String stage) {
-                boolean wasActive = mAdaptiveChargingActive;
-                mAdaptiveChargingActive = AdaptiveChargingManager.isActive(stage, seconds);
-                long currentEstimation = mEstimatedChargeCompletion;
+            public void onReceiveStatus(String str, int i) {
+                boolean z = mAdaptiveChargingActive;
+                mAdaptiveChargingActive = AdaptiveChargingManager.isActive(str, i);
+                long j = mEstimatedChargeCompletion;
                 long currentTimeMillis = System.currentTimeMillis();
-                mEstimatedChargeCompletion = TimeUnit.SECONDS.toMillis(seconds + 29) + currentTimeMillis;
-                long abs = Math.abs(mEstimatedChargeCompletion - currentEstimation);
-                if (mAdaptiveChargingActive != wasActive || (mAdaptiveChargingActive && abs > TimeUnit.SECONDS.toMillis(30L))) {
+                TimeUnit timeUnit = TimeUnit.SECONDS;
+                mEstimatedChargeCompletion = currentTimeMillis + timeUnit.toMillis(i + 29);
+                long abs = Math.abs(mEstimatedChargeCompletion - j);
+                if (z != mAdaptiveChargingActive || (mAdaptiveChargingActive && abs > timeUnit.toMillis(30L))) {
                     updateDeviceEntryIndication(true);
                 }
             }
         };
         mContext = context;
         mBroadcastDispatcher = broadcastDispatcher;
+        mTunerService = tunerService;
         mDeviceConfig = deviceConfigProxy;
         mAdaptiveChargingManager = new AdaptiveChargingManager(context);
+        mBatteryInfo = iBatteryStats;
     }
 
     @Override
-    public String computePowerIndication() {
+    public void init() {
+        super.init();
+        if (mInited) {
+            return;
+        }
+        mInited = true;
+        mTunerService.addTunable(new TunerService.Tunable() {
+            @Override
+            public final void onTuningChanged(String str, String str2) {
+                refreshAdaptiveChargingEnabled();
+            }
+        }, "adaptive_charging_enabled");
+        mDeviceConfig.addOnPropertiesChangedListener("adaptive_charging", mContext.getMainExecutor(), new DeviceConfig.OnPropertiesChangedListener() { // from class: com.google.android.systemui.statusbar.KeyguardIndicationControllerGoogle$$ExternalSyntheticLambda0
+            public final void onPropertiesChanged(DeviceConfig.Properties properties) {
+                if (properties.getKeyset().contains("adaptive_charging_enabled")) {
+                    triggerAdaptiveChargingStatusUpdate();
+                }
+            }
+        });
+        triggerAdaptiveChargingStatusUpdate();
+        mBroadcastDispatcher.registerReceiver(mBroadcastReceiver, new IntentFilter("com.google.android.systemui.adaptivecharging.ADAPTIVE_CHARGING_DEADLINE_SET"), null, UserHandle.ALL);
+    }
+
+    private void refreshAdaptiveChargingEnabled() {
+        mAdaptiveChargingEnabledInSettings = mAdaptiveChargingManager.isAvailable() && mAdaptiveChargingManager.isEnabled();
+    }
+
+    @Override
+    protected String computePowerIndication() {
         if (mIsCharging && mAdaptiveChargingEnabledInSettings && mAdaptiveChargingActive) {
             String formatTimeToFull = mAdaptiveChargingManager.formatTimeToFull(mEstimatedChargeCompletion);
             return mContext.getResources().getString(R.string.adaptive_charging_time_estimate, NumberFormat.getPercentInstance().format(mBatteryLevel / 100.0f), formatTimeToFull);
@@ -184,39 +200,30 @@ public class KeyguardIndicationControllerGoogle extends KeyguardIndicationContro
         }
     }
 
-    private void refreshAdaptiveChargingEnabled() {
-        boolean supported = mAdaptiveChargingManager.isAvailable();
-        if (supported) {
-            mAdaptiveChargingEnabledInSettings = mAdaptiveChargingManager.getEnabled();
-        } else {
-            mAdaptiveChargingEnabledInSettings = false;
-        }
-    }
-
-    @Override
-    public final void init() {
-        super.init();
-        if (mInited) {
-            return;
-        }
-        mInited = true;
-        DelayableExecutor delayableExecutor = mExecutor;
-        mDeviceConfig.addOnPropertiesChangedListener("adaptive_charging", delayableExecutor,
-            (properties) -> {
-                if (properties.getKeyset().contains("adaptive_charging_enabled")) {
-                    triggerAdaptiveChargingStatusUpdate();
-                }
-        });
-        triggerAdaptiveChargingStatusUpdate();
-        mBroadcastDispatcher.registerReceiver(mBroadcastReceiver, new IntentFilter("com.google.android.systemui.adaptivecharging.ADAPTIVE_CHARGING_DEADLINE_SET"), null, UserHandle.ALL);
-    }
-
-    public void triggerAdaptiveChargingStatusUpdate() {
+    private void triggerAdaptiveChargingStatusUpdate() {
         refreshAdaptiveChargingEnabled();
         if (mAdaptiveChargingEnabledInSettings) {
             mAdaptiveChargingManager.queryStatus(mAdaptiveChargingStatusReceiver);
         } else {
             mAdaptiveChargingActive = false;
+        }
+    }
+
+    protected class GoogleKeyguardCallback extends KeyguardIndicationController.BaseKeyguardCallback {
+        protected GoogleKeyguardCallback() {
+            super();
+        }
+
+        @Override
+        public void onRefreshBatteryInfo(BatteryStatus batteryStatus) {
+            mIsCharging = batteryStatus.status == 2;
+            mBatteryLevel = batteryStatus.level;
+            super.onRefreshBatteryInfo(batteryStatus);
+            if (mIsCharging) {
+                triggerAdaptiveChargingStatusUpdate();
+            } else {
+                mAdaptiveChargingActive = false;
+            }
         }
     }
 }

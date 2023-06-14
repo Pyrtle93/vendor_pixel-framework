@@ -16,7 +16,6 @@
 
 package com.google.android.systemui.dreamliner;
 
-import androidx.annotation.NonNull;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -26,23 +25,25 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Handler;
+import android.os.HandlerExecutor;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.ResultReceiver;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.os.UserHandle;
-import android.os.Handler;
-import android.os.HandlerExecutor;
 import android.service.dreams.IDreamManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.systemui.Dependency;
-import com.android.systemui.dagger.qualifiers.Main;
+import com.android.systemui.broadcast.BroadcastDispatcher;
 import com.android.systemui.dock.DockManager;
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.settings.UserTracker;
@@ -109,6 +110,8 @@ public class DockObserver extends BroadcastReceiver implements DockManager {
     private final DockAlignmentController mDockAlignmentController;
     private final DelayableExecutor mMainExecutor;
     private final StatusBarStateController mStatusBarStateController;
+    private final UserTracker mUserTracker;
+    private final Handler mMainHandler;
     private final WirelessCharger mWirelessCharger;
     @VisibleForTesting
     DockGestureController mDockGestureController;
@@ -124,21 +127,7 @@ public class DockObserver extends BroadcastReceiver implements DockManager {
     private FrameLayout mPhotoPreview;
     private int mFanLevel = -1;
 
-    private final Handler mMainHandler;
-    private final UserTracker mUserTracker;
-
-    private final UserTracker.Callback mUserChangedCallback =
-            new UserTracker.Callback() {
-                @Override
-                public void onUserChanged(int newUser, @NonNull Context userContext) {
-                    stopDreamlinerService(mContext);
-                    updateCurrentDockingStatus(mContext);
-                }
-            };
-
-    public DockObserver(final Context context, WirelessCharger wirelessCharger, StatusBarStateController statusBarStateController,
-        NotificationInterruptStateProvider notificationInterruptStateProvider, ConfigurationController configurationController,
-        DelayableExecutor delayableExecutor, @NonNull UserTracker userTracker, @Main Handler mainHandler) {
+    public DockObserver(final Context context, WirelessCharger wirelessCharger, BroadcastDispatcher broadcastDispatcher, StatusBarStateController statusBarStateController, NotificationInterruptStateProvider notificationInterruptStateProvider, ConfigurationController configurationController, DelayableExecutor delayableExecutor, UserTracker userTracker,  Handler mainHandler) {
         NotificationInterruptSuppressor notificationInterruptSuppressor = new NotificationInterruptSuppressor() {
             @Override
             public String getName() {
@@ -152,8 +141,12 @@ public class DockObserver extends BroadcastReceiver implements DockManager {
         };
         mMainExecutor = delayableExecutor;
         mContext = context;
+        mMainHandler = mainHandler;
         mClients = new ArrayList();
         mAlignmentStateListeners = new ArrayList();
+        mUserTracker = userTracker;
+        mUserTracker.addCallback(mUserChangedCallback, new HandlerExecutor(mMainHandler));
+
         mWirelessCharger = wirelessCharger;
         if (wirelessCharger == null) {
             Log.i("DLObserver", "wireless charger is null, check dock component.");
@@ -164,9 +157,16 @@ public class DockObserver extends BroadcastReceiver implements DockManager {
         notificationInterruptStateProvider.addSuppressor(notificationInterruptSuppressor);
         mConfigurationController = configurationController;
         refreshFanLevel(null);
-        mUserTracker = userTracker;
-        mMainHandler = mainHandler;
     }
+
+   private final UserTracker.Callback mUserChangedCallback =
+            new UserTracker.Callback() {
+                @Override
+                public void onUserChanged(int i, @NonNull Context userContext) {
+                stopDreamlinerService(mContext);
+                updateCurrentDockingStatus(mContext);
+                }
+            };
 
     private static void runOnBackgroundThread(Runnable runnable) {
         if (mSingleThreadExecutor == null) {
@@ -450,7 +450,7 @@ public class DockObserver extends BroadcastReceiver implements DockManager {
                 DreamlinerServiceConn dreamlinerServiceConn = new DreamlinerServiceConn(context);
                 mDreamlinerServiceConn = dreamlinerServiceConn;
                 if (context.bindServiceAsUser(intent, dreamlinerServiceConn, 1, new UserHandle(mUserTracker.getUserId()))) {
-                    mUserTracker.addCallback(mUserChangedCallback, new HandlerExecutor(mMainHandler));
+            mUserTracker.addCallback(mUserChangedCallback, mMainExecutor);
                     return;
                 }
             } catch (SecurityException e) {
