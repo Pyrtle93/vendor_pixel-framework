@@ -203,8 +203,6 @@ Clear Calling is available depending on your Wi‑Fi and mobile network."</strin
     <string name="config_deletion_helper_package">com.google.android.storagemanager</string>
     <string name="config_emergency_intent_action">com.google.android.safetyhub.SAFETY_HUB</string>
     <string name="config_emergency_package_name">com.google.android.apps.safetyhub</string>
-    <string name="config_face_enroll">com.android.settings/com.google.android.settings.biometrics.face.FaceEnrollTrampoline</string>
-    <string name="config_face_enroll_traffic_light_package"/>
     <string name="config_featureFactory">com.google.android.settings.overlay.FeatureFactoryImpl</string>
     <string name="config_grayscale_settings_intent">intent:#Intent;action=com.google.android.apps.wellbeing.action.WIND_DOWN;launchFlags=0x10000000;end</string>
     <string name="config_non_public_slice_query_uri">content://com.android.settings.slices/settings_internal_slices</string>

@@ -60,15 +60,6 @@
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS" android:value="com.google.android.settings.gestures.columbus.ColumbusSettings"/>
         </activity>
-        <activity android:exported="true" android:name="com.google.android.settings.biometrics.face.FaceEnrollTrampoline" android:screenOrientation="portrait" android:theme="@style/SudThemeGlif.Light"/>
-        <activity android:exported="false" android:name="com.google.android.settings.biometrics.face.FaceEnrollEnrolling" android:screenOrientation="portrait" android:theme="@style/SudThemeGlif.Light"/>
-        <activity android:exported="false" android:name="com.google.android.settings.biometrics.face.FaceEnrollParticipation" android:screenOrientation="portrait" android:theme="@style/SudThemeGlif.Light"/>
-        <activity android:exported="true" android:name="com.google.android.settings.biometrics.face.FaceEnrollConfirmation" android:screenOrientation="portrait" android:theme="@style/SudThemeGlif.Light">
-            <intent-filter>
-                <action android:name="com.google.android.settings.action.CONFIRM_FACE_ENROLLMENT"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
         <activity android:exported="true" android:icon="@drawable/ic_suggestion_aware" android:label="@string/aware_settings_title" android:name="com.google.android.settings.aware.AwareSettingsActivity" android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="com.android.settings.action.AWARE_SETTING"/>
