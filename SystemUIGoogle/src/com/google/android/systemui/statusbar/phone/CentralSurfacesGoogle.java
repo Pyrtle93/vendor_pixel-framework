@@ -149,6 +149,7 @@ public class CentralSurfacesGoogle extends CentralSurfacesImpl {
     private final SmartSpaceController mSmartSpaceController;
     private final NotificationLockscreenUserManagerGoogle mNotificationLockscreenUserManagerGoogle;
     private final Optional<ReverseChargingViewController> mReverseChargingViewControllerOptional;
+    private final WallpaperNotifier mWallpaperNotifier;
     private final BurnInProtectionController mBurnInProtectionController;
 
     private long mAnimStartTime;
@@ -248,6 +249,7 @@ public class CentralSurfacesGoogle extends CentralSurfacesImpl {
             WiredChargingRippleController wiredChargingRippleController,
             TunerService tunerService,
             IDreamManager dreamManager,
+            WallpaperNotifier wallpaperNotifier,
             BurnInProtectionController burnInProtectionController,
             SmartSpaceController smartSpaceController,
             Optional<ReverseChargingViewController> reverseChargingViewControllerOptional,
@@ -318,6 +320,7 @@ public class CentralSurfacesGoogle extends CentralSurfacesImpl {
         mReverseChargingViewControllerOptional = reverseChargingViewControllerOptional;
         mKeyguardIndicationController = keyguardIndicationControllerGoogle;
         mStatusBarStateController = statusBarStateController;
+        mWallpaperNotifier = wallpaperNotifier;
         mBurnInProtectionController = burnInProtectionController;
         mSmartSpaceController = smartSpaceController;
         mNotificationLockscreenUserManagerGoogle = notificationLockscreenUserManagerGoogle;
@@ -326,6 +329,7 @@ public class CentralSurfacesGoogle extends CentralSurfacesImpl {
     @Override
     public void start() {
         super.start();
+        mWallpaperNotifier.attach();
         mBatteryController.observe(getLifecycle(), mBatteryStateChangeCallback);
         DockObserver dockObserver = (DockObserver) Dependency.get(DockManager.class);
         dockObserver.setDreamlinerGear((ImageView) mNotificationShadeWindowView.findViewById(R.id.dreamliner_gear));
