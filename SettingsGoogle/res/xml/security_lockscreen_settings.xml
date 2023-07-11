@@ -28,7 +28,7 @@
             android:summary="@string/summary_placeholder"
             settings:keywords="@string/keywords_lock_screen_notif"/>
 
-        <com.xtended.support.preferences.SecureSettingListPreference
+        <com.superior.support.preferences.SecureSettingListPreference
             android:key="face_unlock_method"
             android:title="@string/face_unlock_method_title"
             android:summary="%s"
@@ -106,50 +106,32 @@
             settings:controller="com.android.settings.display.AmbientDisplayAlwaysOnPreferenceController"
             settings:userRestriction="no_ambient_display" />
 
-        <com.xtended.support.preferences.SystemSettingSwitchPreference
-            android:key="doze_on_charge"
-            android:defaultValue="false"
-            android:title="@string/doze_on_charge_title"
-            android:summary="@string/doze_on_charge_summary" />
-
-        <SwitchPreference
-            android:key="gesture_tap"
+        <Preference
+            android:key="ambient_display_tap"
             android:title="@string/ambient_display_tap_screen_title"
-            android:summary="@string/ambient_display_tap_screen_summary"
-            settings:keywords="@string/keywords_gesture"
+            android:fragment="com.android.settings.gestures.TapScreenGestureSettings"
+            settings:searchable="false"
             settings:controller="com.android.settings.gestures.TapScreenGesturePreferenceController" />
 
-        <com.android.settingslib.PrimarySwitchPreference
+        <Preference
             android:key="ambient_display_double_tap"
             android:title="@string/ambient_display_title"
             android:fragment="com.android.settings.gestures.DoubleTapScreenSettings"
             settings:searchable="false"
-            android:summary="@string/ambient_display_summary"
-            settings:keywords="@string/keywords_gesture"
             settings:controller="com.android.settings.gestures.DoubleTapScreenPreferenceController" />
 
-        <com.android.settingslib.PrimarySwitchPreference
+        <Preference
             android:key="ambient_display_pick_up"
             android:title="@string/ambient_display_pickup_title"
             android:fragment="com.android.settings.gestures.PickupGestureSettings"
             settings:searchable="false"
-            android:summary="@string/ambient_display_pickup_summary"
-            settings:keywords="@string/keywords_gesture"
             settings:controller="com.android.settings.gestures.PickupGesturePreferenceController" />
 
-        <!-- Actually controls doze enablement -->
         <SwitchPreference
             android:key="ambient_display_notification"
-            android:title="@string/doze_enabled_title"
-            android:summary="@string/doze_enabled_summary"
-            settings:controller="com.android.settings.display.AmbientDisplayNotificationsPreferenceController" />
-
-        <!-- Controls wake for notifications -->
-        <com.xtended.support.preferences.SecureSettingSwitchPreference
-            android:key="doze_for_notifications"
             android:title="@string/doze_title"
             android:summary="@string/doze_summary"
-            android:defaultValue="true" />
+            settings:controller="com.android.settings.display.AmbientDisplayNotificationsPreferenceController" />
 
         <Preference
             android:key="ambient_display_custom"
@@ -174,3 +156,4 @@
     </PreferenceCategory>
 
 </PreferenceScreen>
+

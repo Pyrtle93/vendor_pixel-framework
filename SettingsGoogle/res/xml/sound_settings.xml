@@ -21,11 +21,6 @@
     android:key="sound_settings"
     settings:keywords="@string/keywords_sounds">
 
-   <Preference
-        android:key="sound_animation"
-        android:layout="@layout/sound_animation" 
-        android:order="-999"/>
-
     <!-- Remote volume group -->
     <PreferenceCategory
         android:key="remote_media_group"
@@ -77,14 +72,22 @@
         android:order="-160"
         settings:controller="com.android.settings.notification.RingVolumePreferenceController"/>
 
+    <!-- Separate Ring volume -->
+    <com.android.settings.notification.VolumeSeekBarPreference
+        android:key="separate_ring_volume"
+        android:icon="@drawable/ic_ring_volume"
+        android:title="@string/separate_ring_volume_option_title"
+        android:order="-155"
+        settings:controller="com.android.settings.notification.SeparateRingVolumePreferenceController"/>
+
     <!-- Notification volume -->
     <com.android.settings.notification.VolumeSeekBarPreference
         android:key="notification_volume"
         android:icon="@drawable/ic_notifications"
         android:title="@string/notification_volume_option_title"
         android:order="-150"
-        settings:controller=
-            "com.android.settings.notification.NotificationVolumePreferenceController"/>
+        settings:controller="com.android.settings.notification.NotificationVolumePreferenceController"
+        settings:unavailableSliceSubtitle="@string/notification_volume_disabled_summary"/>
 
     <!-- Alarm volume -->
     <com.android.settings.notification.VolumeSeekBarPreference
@@ -95,20 +98,11 @@
         settings:controller="com.android.settings.notification.AlarmVolumePreferenceController"/>
 
     <!-- Link ringtone and notification volumes -->
-    <com.xtended.support.preferences.SecureSettingSwitchPreference
+    <SwitchPreference
         android:key="volume_link_notification"
         android:title="@string/volume_link_notification_title"
-        android:defaultValue="@*android:bool/config_alias_ring_notif_stream_types"
         android:order="-138"
         settings:controller="com.android.settings.notification.LinkedVolumesPreferenceController"/>
-
-    <!-- Live Volume Steps -->
-    <Preference
-        android:key="volume_steps"
-        android:title="@string/volume_steps_title"
-        android:summary="@string/volume_steps_summary"
-        android:order="-135"
-        android:fragment="com.android.settings.xtended.VolumeSteps" />
 
     <!-- TODO(b/174964721): make this a PrimarySwitchPreference -->
     <!-- Interruptions -->
@@ -116,7 +110,7 @@
         android:key="zen_mode"
         android:title="@string/zen_mode_settings_title"
         android:fragment="com.android.settings.notification.zen.ZenModeSettings"
-        android:order="-125"
+        android:order="-130"
         settings:useAdminDisabledSummary="true"
         settings:keywords="@string/keywords_sounds_and_notifications_interruptions"
         settings:controller="com.android.settings.notification.zen.ZenModePreferenceController"/>
@@ -130,15 +124,6 @@
         android:ringtoneType="ringtone"
         android:order="-120"
         settings:keywords="@string/sound_settings"/>
-
-    <!-- Phone ringtone for SIM2 -->
-    <com.android.settings.DefaultRingtonePreference
-        android:key="phone_ringtone2"
-        android:title="@string/ringtone_title"
-        android:dialogTitle="@string/ringtone_title"
-        android:summary="@string/summary_placeholder"
-        android:ringtoneType="ringtone"
-        android:order="-119"/>
 
     <!-- Live Caption -110 and Now Playing -105-->
 
@@ -166,23 +151,6 @@
         android:order="-90"
         settings:controller="com.android.settings.accessibility.VibrationPreferenceController"
         settings:keywords="@string/keywords_vibration"/>
-
-    <!-- Ringtone vibration pattern -->
-    <ListPreference
-        android:key="vibration_pattern"
-        android:title="@string/vibration_pattern_title"
-        android:order="-85"
-        android:entries="@array/vibration_pattern_entries"
-        android:entryValues="@array/vibration_pattern_values"/>
-
-    <!-- Custom ringtone vibration pattern preference -->
-    <Preference
-        android:key="custom_vibration_pattern"
-        android:title="@string/custom_vibration_pattern_title"
-        android:summary="@string/custom_vibration_pattern_summary"
-        android:order="-83"
-        android:fragment="com.android.settings.sound.CustomVibrationPreferenceFragment"
-        android:visibility="gone"/>
 
     <com.android.settingslib.PrimarySwitchPreference
         android:key="gesture_prevent_ringing_sound"
@@ -218,13 +186,6 @@
         android:title="@string/clear_calling_title"
         settings:controller="com.google.android.settings.notification.ClearCallingPreferenceController" />
 
-    <com.xtended.support.preferences.SystemSettingSwitchPreference
-        android:key="show_app_volume"
-        android:title="@string/app_volume_title"
-        android:summary="@string/app_volume_summary"
-        android:defaultValue="false"
-        android:order="-5"/>
-
     <!-- Dial pad tones -->
     <SwitchPreference
         android:key="dial_pad_tones"
@@ -237,17 +198,17 @@
         android:title="@string/screen_locking_sounds_title"
         android:order="-45"/>
 
+    <!-- Screenshot sound -->
+    <SwitchPreference
+        android:key="screenshot_shutter_sound"
+        android:title="@string/screenshot_shutter_sound_title"
+        android:order="-43"/>
+
     <!-- Charging sounds -->
     <SwitchPreference
         android:key="charging_sounds"
-        android:title="@string/charging_sounds_custom_title"
+        android:title="@string/charging_sounds_title"
         android:order="-40"/>
-
-    <!-- Charging vibro -->
-    <SwitchPreference
-        android:key="charging_vibro"
-        android:title="@string/charging_vibro_title"
-        android:order="-39"/>
 
     <!-- Docking sounds -->
     <SwitchPreference
@@ -286,6 +247,13 @@
         android:title="@string/emergency_tone_title"
         android:summary="%s"
         android:order="-10"/>
+
+    <com.superior.support.preferences.SystemSettingSwitchPreference
+        android:key="show_app_volume"
+        android:title="@string/app_volume_title"
+        android:summary="@string/app_volume_summary"
+        android:defaultValue="false"
+        android:order="-5"/>
 
     <Preference
         android:key="sound_work_settings"

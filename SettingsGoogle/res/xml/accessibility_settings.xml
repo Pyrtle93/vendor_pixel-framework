@@ -21,10 +21,6 @@
     android:persistent="false"
     android:title="@string/accessibility_settings">
 
-    <Preference
-            android:key="accesibility_animation"
-            android:layout="@layout/accessibility_animation" />
-
     <PreferenceCategory
         android:key="user_installed_services_category"
         android:persistent="false"
@@ -78,6 +74,13 @@
             android:icon="@drawable/ic_tap_assistance"
             android:persistent="false"
             android:title="@string/accessibility_tap_assistance_title"
+            settings:searchable="true"/>
+
+        <Preference
+            android:fragment="com.android.settings.accessibility.SystemControlsFragment"
+            android:key="system_controls_preference_screen"
+            android:icon="@drawable/ic_system_controls"
+            android:title="@string/accessibility_system_controls_title"
             settings:searchable="true"/>
 
         <Preference
