@@ -14,6 +14,8 @@
     <string name="keywords_wake_display"/>
     <string name="touch_sensitivity_summary">Increase touch sensitivity and improve touch when using a screen protector</string>
     <string name="touch_sensitivity_title">Screen protector mode</string>
+    <string name="high_touch_sensitivity_title">High touch sensitivity</string>
+    <string name="high_touch_sensitivity_summary">High touch sensitivity allows you to use your phone while wearing gloves.</string>
     <string name="columbus_title">Quick Tap to start actions</string>
     <string name="accessibility_assist_gesture_complete_or_keep_adjusting">Active Edge set up. Go to the next screen or keep adjusting.</string>
     <string name="accessibility_keyboard_haptics_title">Keyboard haptics</string>
