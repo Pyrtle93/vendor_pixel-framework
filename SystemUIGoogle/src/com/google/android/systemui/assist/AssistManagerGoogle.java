@@ -93,8 +93,8 @@ public class AssistManagerGoogle extends AssistManager {
                                AssistantPresenceHandler assistantPresenceHandler,
                                NgaUiController ngaUiController,
                                NgaMessageHandler ngaMessageHandler,
-			       UserTracker userTracker,
-			       DisplayTracker displayTracker,
+                               UserTracker userTracker,
+                               DisplayTracker displayTracker,
                                SecureSettings secureSettings,
                                IWindowManager iWindowManager) {
         super(controller, context, assistUtils, commandQueue,
