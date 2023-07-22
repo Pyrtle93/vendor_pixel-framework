@@ -55,6 +55,12 @@
         settings:position="top"
         android:summary="@string/advanced_battery_preference_summary"
         settings:searchable="false" />
+        
+    <com.alpha.settings.preferences.SystemSettingSwitchPreference
+        android:key="battery_24_hrs_stats"
+        android:title="@string/advanced_battery_preference_summary_google"
+        android:defaultValue="false"
+        settings:searchable="false" />
 
     <Preference
         android:fragment="com.android.settings.fuelgauge.batterysaver.BatterySaverSettings"
