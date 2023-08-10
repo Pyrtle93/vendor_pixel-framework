@@ -101,6 +101,7 @@ import com.google.android.systemui.statusbar.dagger.StartCentralSurfacesGoogleMo
 import com.google.android.systemui.statusbar.KeyguardIndicationControllerGoogle;
 import com.google.android.systemui.statusbar.policy.BatteryControllerImplGoogle;
 import com.google.android.systemui.elmyra.ServiceConfigurationGoogle;
+import com.google.android.systemui.statusbar.policy.dagger.SystemUIGooglePolicyModule;
 
 import javax.inject.Named;
 
@@ -125,7 +126,8 @@ import dagger.Lazy;
         AssistModule.class,
         ElmyraModule.class,
         ColumbusModule.class,
-        StatusBarEventsModule.class
+        StatusBarEventsModule.class,
+        SystemUIGooglePolicyModule.class,
 })
 public abstract class SystemUIGoogleModule {
 
