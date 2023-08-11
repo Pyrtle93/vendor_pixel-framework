@@ -1,55 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2022 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:key="communal_preference_screen"
-    android:title="@string/communal_settings_title">
-
-    <PreferenceCategory
-        android:key="communal_what_to_show"
-        android:title="@string/communal_what_to_show">
-
-        <Preference
-            android:fragment="com.android.settings.dream.DreamSettings"
-            android:key="screensaver_from_communal_settings"
-            android:order="0"
-            android:title="@string/screensaver_settings_title"
-            settings:controller="com.android.settings.display.ScreenSaverPreferenceController" />
-
-        <Preference
-            android:key="smartspace_from_communal_settings"
-            android:order="10"
-            android:summary="@string/communal_smartspace_summary"
-            android:title="@string/communal_smartspace_title"
-            settings:controller="com.google.android.settings.smartspace.CommunalSmartspacePreferenceController" />
-
-        <Preference
-            android:fragment="com.android.settings.security.LockscreenDashboardFragment"
-            android:key="lockscreen_from_communal_settings"
-            android:order="20"
-            android:summary="@string/communal_lock_screen_summary"
-            android:title="@string/lockscreen_settings_title" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="communal_what_to_use"
-        android:order="25"
-        android:title="@string/communal_what_to_use">
-
-        <Preference
-            android:fragment="com.android.settings.wfd.WifiDisplaySettings"
-            android:key="cast_from_communal_settings"
-            android:order="40"
-            android:summary="@string/communal_cast_summary"
-            android:title="@string/wifi_display_settings_title"
-            settings:controller="com.google.android.settings.wfd.CommunalWifiDisplayPreferenceController" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="communal_other"
-        android:order="45"
-        android:title="@string/communal_other" />
-
-</PreferenceScreen>
+    android:title="@string/communal_settings_title" />
+	

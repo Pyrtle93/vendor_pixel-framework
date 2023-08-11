@@ -2,10 +2,10 @@
 <resources>
     <bool name="config_adaptive_alert_vibration_enabled">false</bool>
     <bool name="config_app_battery_usage_list_enabled">true</bool>
-    <bool name="config_clear_calling_enabled">false</bool>
+    <bool name="config_clear_calling_enabled">true</bool>
     <bool name="config_connectivity_helper_call_quality_default_value">true</bool>
     <bool name="config_connectivity_helper_d2d_default_value">false</bool>
-    <bool name="config_face_enroll_use_traffic_light">false</bool>
+    <bool name="config_face_enroll_use_traffic_light">true</bool>
     <bool name="config_face_settings_attention_supported">true</bool>
     <bool name="config_face_settings_should_manage_preview">true</bool>
     <bool name="config_gesture_settings_enabled">true</bool>
@@ -18,7 +18,7 @@
     <bool name="config_show_connectivity_helper_call_quality">false</bool>
     <bool name="config_show_connectivity_helper_d2d">false</bool>
     <bool name="config_show_device_header_in_device_info">false</bool>
-    <bool name="config_show_reverse_charging">false</bool>
+    <bool name="config_show_reverse_charging">true</bool>
     <bool name="config_show_smart_storage_toggle">false</bool>
     <!--bool name="config_show_smooth_display">true</bool-->
     <bool name="config_show_touch_sensitivity">false</bool>
