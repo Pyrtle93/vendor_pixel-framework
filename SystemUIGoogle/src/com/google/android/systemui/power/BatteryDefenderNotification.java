@@ -58,6 +58,7 @@ class BatteryDefenderNotification {
     boolean mRunBypassActionTask = true;
     private int mBatteryLevel;
     private SharedPreferences mSharedPreferences;
+    private boolean mHasSystemFeature = false;
 
     private static final boolean DEBUG = false;
 
@@ -65,6 +66,7 @@ class BatteryDefenderNotification {
         mContext = context;
         mUiEventLogger = uiEventLogger;
         mNotificationManager = context.getSystemService(NotificationManager.class);
+        mHasSystemFeature = mContext.getPackageManager().hasSystemFeature("com.google.android.feature.ADAPTIVE_CHARGING");
     }
 
     void dispatchIntent(Intent intent) {
@@ -168,6 +170,10 @@ class BatteryDefenderNotification {
                     Log.d(TAG, "serviceDied");
                 }
             };
+            if(!mHasSystemFeature) {
+                Log.d(TAG, "Device does not support Google Battery");
+                return;
+            }
             IGoogleBattery initHalInterface = initHalInterface(cbRecipient);
             if (initHalInterface == null) {
                 Log.d(TAG, "Can not init hal interface");
