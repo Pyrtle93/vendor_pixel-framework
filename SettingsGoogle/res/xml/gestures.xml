@@ -20,19 +20,6 @@
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:title="@string/gesture_preference_title">
 
-    <lineageos.preference.LineagePartsPreference
-        android:key="touchscreen_gesture_settings"
-        settings:requiresFeature="lineagehardware:FEATURE_TOUCHSCREEN_GESTURES" />
-
-    <lineageos.preference.RemotePreference
-            android:key="device_touchscreen_gesture_settings"
-            android:title="@string/touchscreen_gesture_settings_title"
-            android:summary="@string/touchscreen_gesture_settings_summary"
-            settings:replacesKey="touchscreen_gesture_settings"
-            settings:requiresFeature="lineagehardware:FEATURE_TOUCHSCREEN_GESTURES">
-        <intent android:action="org.lineageos.settings.device.GESTURE_SETTINGS" />
-    </lineageos.preference.RemotePreference>
-
     <Preference
         android:key="gesture_assist_input_summary"
         android:title="@string/assist_gesture_title"
@@ -101,21 +88,27 @@
         settings:controller="com.android.settings.gestures.PickupGesturePreferenceController" />
 
     <Preference
-        android:key="gesture_screen_off_udfps_input_summary"
-        android:title="@string/ambient_display_screen_off_udfps_title"
-        android:fragment="com.android.settings.gestures.ScreenOffUdfpsSettings"
-        settings:searchable="false"
-        settings:controller="com.android.settings.gestures.ScreenOffUdfpsPreferenceController" />
-
-    <Preference
         android:key="gesture_power_menu_summary"
         android:title="@string/power_menu_setting_name"
         android:fragment="com.android.settings.gestures.PowerMenuSettings"
         settings:controller="com.android.settings.gestures.PowerMenuPreferenceController" />
+
+    <Preference
+        android:key="volume_button_music_control_sumary"
+        android:title="@string/volume_button_music_control_title"
+        android:fragment="com.android.settings.gestures.VolumeButtonMusicControlGestureSettings"
+        settings:controller="com.android.settings.gestures.VolumeButtonMusicControlPreferenceController" />
 
     <com.android.settingslib.PrimarySwitchPreference
         android:key="gesture_prevent_ringing_summary"
         android:title="@string/gesture_prevent_ringing_screen_title"
         android:fragment="com.android.settings.gestures.PreventRingingGestureSettings"
         settings:controller="com.android.settings.gestures.PreventRingingParentPreferenceController" />
+
+    <Preference
+        android:key="gesture_adaptive_playback_summary"
+        android:title="@string/adaptive_playback_screen_title"
+        android:fragment="com.android.settings.gestures.AdaptivePlaybackGestureSettings"
+        settings:controller="com.android.settings.gestures.AdaptivePlaybackParentPreferenceController" />
+
 </PreferenceScreen>

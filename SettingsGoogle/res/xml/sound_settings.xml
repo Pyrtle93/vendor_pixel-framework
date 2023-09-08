@@ -41,7 +41,6 @@
     <!-- Media output switcher -->
     <Preference
         android:key="media_output"
-        android:icon="@drawable/ic_app_volume"
         android:title="@string/media_output_title"
         android:dialogTitle="@string/media_output_title"
         android:order="-175"
@@ -68,7 +67,7 @@
     <!-- Ring volume -->
     <com.android.settings.notification.VolumeSeekBarPreference
         android:key="ring_volume"
-        android:icon="@drawable/ic_volume_ringer"
+        android:icon="@drawable/ic_notifications"
         android:title="@string/ring_volume_option_title"
         android:order="-160"
         settings:controller="com.android.settings.notification.RingVolumePreferenceController"/>
@@ -98,15 +97,16 @@
         android:order="-140"
         settings:controller="com.android.settings.notification.AlarmVolumePreferenceController"/>
 
-    <!-- Link ringtone and notification volumes -->
-    <SwitchPreference
-        android:key="volume_link_notification"
-        android:title="@string/volume_link_notification_title"
+    <!-- Separate ring & notification toggle -->
+    <com.ancient.settings.preferences.SecureSettingSwitchPreference
+        android:key="volume_separate_notification"
+        android:title="@string/volume_separate_notification_title"
+        android:summary="@string/volume_separate_notification_summary"
         android:order="-138"
-        settings:controller="com.android.settings.notification.LinkedVolumesPreferenceController"/>
+        settings:controller="com.android.settings.notification.SeparateNotificationPreferenceController"/>
 
     <!-- Increasing ring -->
-    <lineageos.preference.LineageSystemSettingSwitchPreference
+    <com.ancient.settings.preferences.SystemSettingSwitchPreference
         android:key="increasing_ring"
         android:title="@string/increasing_ring_volume_option_title"
         android:order="-136"
@@ -141,14 +141,15 @@
         android:order="-120"
         settings:keywords="@string/sound_settings"/>
 
-    <!-- Phone ringtone for SIM2 -->
+    <!-- Phone ringtone for Slot2 -->
     <com.android.settings.DefaultRingtonePreference
-        android:key="phone_ringtone2"
+        android:key="ringtone2"
         android:title="@string/ringtone_title"
         android:dialogTitle="@string/ringtone_title"
         android:summary="@string/summary_placeholder"
         android:ringtoneType="ringtone"
-        android:order="-119"/>
+        android:order="-119"
+        settings:keywords="@string/sound_settings"/>
 
     <!-- Live Caption -110 and Now Playing -105-->
 
@@ -220,14 +221,13 @@
         android:order="-60"/>
 
     <Preference
-        android:fragment="com.google.android.settings.notification.ClearCallingSettings"
         android:key="clear_calling"
-        android:order="-55"
-        android:summary="@string/clear_calling_topintro"
         android:title="@string/clear_calling_title"
-        settings:controller="com.google.android.settings.notification.ClearCallingPreferenceController" />
+        android:summary="@string/clear_calling_topintro"
+        android:fragment="com.google.android.settings.notification.ClearCallingSettings"
+        settings:controller="com.google.android.settings.notification.ClearCallingPreferenceController"/>
 
-    <com.alpha.settings.preferences.SystemSettingSwitchPreference
+    <com.ancient.settings.preferences.SystemSettingSwitchPreference
         android:key="show_app_volume"
         android:title="@string/app_volume_title"
         android:summary="@string/app_volume_summary"
@@ -246,16 +246,17 @@
         android:title="@string/screen_locking_sounds_title"
         android:order="-45"/>
 
+    <!-- Screenshot sound -->
+    <SwitchPreference
+        android:key="screenshot_shutter_sound"
+        android:title="@string/screenshot_shutter_sound_title"
+        android:order="-43"/>
+
     <!-- Charging sounds -->
     <SwitchPreference
         android:key="charging_sounds"
         android:title="@string/charging_sounds_title"
         android:order="-40"/>
-
-    <!-- Custom charging sounds -->
-    <lineageos.preference.LineagePartsPreference
-        android:key="charging_sounds_settings"
-        settings:replacesKey="charging_sounds" />
 
     <!-- Docking sounds -->
     <SwitchPreference
