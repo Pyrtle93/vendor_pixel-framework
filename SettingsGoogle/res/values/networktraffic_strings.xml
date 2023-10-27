@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+ <string name="network_traffic_enabled_title">Network Speed Info</string>
+ <string name="network_traffic_enabled_summary">Show network speed information on the status bar</string>
+ <string name="keyword_network_traffic">network, speed, network speed, traffic, network traffic, status bar</string>
+</resources>
