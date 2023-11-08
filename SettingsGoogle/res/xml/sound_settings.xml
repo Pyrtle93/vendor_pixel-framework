@@ -196,7 +196,14 @@
         android:title="@string/touch_sounds_title"
         android:key="touch_sounds"
         android:order="-30"/>
-        
+
+    <com.android.settings.preferences.SystemSwitchPreference
+        android:key="show_app_volume"
+        android:title="@string/app_volume_title"
+        android:summary="@string/app_volume_summary"
+        android:defaultValue="false"
+        android:order="-25"/>
+
     <com.android.settings.preferences.ui.AdaptiveSwitchPreference
         android:title="@string/vibrate_icon_title"
         android:key="vibrate_icon"
