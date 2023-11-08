@@ -197,7 +197,7 @@
             settings:controller="com.android.settings.display.PocketModeSettingsController"/>
 
         <com.android.settings.preferences.SystemSwitchPreference 
-            android:key="network_traffic_enabled" 
+            android:key="network_traffic_state" 
             android:title="@string/network_traffic_enabled_title" 
             android:summary="@string/network_traffic_enabled_summary"
             settings:position="bottom"
