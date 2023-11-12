@@ -38,6 +38,7 @@ import com.android.systemui.statusbar.policy.DeviceProvisionedController
 import com.android.systemui.theme.ThemeOverlayApplier
 import com.android.systemui.theme.ThemeOverlayController
 import com.android.systemui.util.settings.SecureSettings
+import com.android.systemui.util.settings.SystemSettings
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
@@ -50,6 +51,7 @@ class ThemeOverlayControllerGoogle @Inject constructor(
     @Background bgExecutor: Executor,
     themeOverlayApplier: ThemeOverlayApplier,
     secureSettings: SecureSettings,
+    systemSettings: SystemSettings,
     wallpaperManager: WallpaperManager,
     userManager: UserManager,
     deviceProvisionedController: DeviceProvisionedController,
@@ -68,6 +70,7 @@ class ThemeOverlayControllerGoogle @Inject constructor(
     bgExecutor,
     themeOverlayApplier,
     secureSettings,
+    systemSettings,
     wallpaperManager,
     userManager,
     deviceProvisionedController,
