@@ -75,7 +75,7 @@ The face data used by face unlock will be permanently and securely deleted. Afte
     <string name="image_content_description">Selectable image</string>
     <string name="instant_apps_help_url">https://support.google.com/googleplay/?p=instant_apps</string>
     <string name="keyguard_indication_trust_unlocked">Kept unlocked by Smart Lock</string>
-    <string name="launcher_overlayable_package">com.google.android.apps.nexuslauncher</string>
+    <string name="launcher_overlayable_package">com.android.launcher3</string>
     <string name="low_battery_label">Low battery</string>
     <string name="no_content_in_select_mode">No text or image to be selected</string>
     <string name="quick_settings_rotation_posture_folded">folded</string>

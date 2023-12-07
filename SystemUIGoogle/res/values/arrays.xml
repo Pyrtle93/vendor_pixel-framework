@@ -22,7 +22,7 @@
     <array name="config_dock_bound_components"/>
     <array name="config_dock_setup_completed_packages"/>
     <string-array name="config_dock_setup_disallowed_components">
-        <item>com.google.android.apps.nexuslauncher/com.android.quickstep.interaction.AllSetActivity</item>
+        <item>com.android.launcher3/com.android.quickstep.interaction.AllSetActivity</item>
     </string-array>
     <integer-array name="config_face_acquire_device_entry_ignorelist">
         <item>1</item>
