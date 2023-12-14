@@ -578,4 +578,20 @@ To improve performance, you can set up Face Unlock again in Settings."</string>
     <string name="wifitrackerlib_wsu_entry_summary_not_provisioned">Tap to connect</string>
     <string name="wifitrackerlib_wsu_entry_summary_provision_error">Can’t connect. Tap to try again.</string>
     <string name="wifitrackerlib_wsu_entry_summary_provisioning">Connecting…</string>
+    <string name="battery_schedule_summary">Manage when Battery Saver turns on</string>
+    <string name="battery_schedule_title">Schedule and reminders</string>
+    <string name="adaptive_battery_switch_title">Use Adaptive Battery</string>
+    <string name="unified_battery_saver_page_intro">Save power to help your phone battery last longer between charges</string>
+    <string name="battery_saver_master_switch_title">Use Battery Saver</string>
+    <string name="basic_battery_saver_summary">Limits visual effects and background activity. Turns on Dark theme, if not already on.</string>
+    <string name="basic_battery_saver_title">Standard Battery Saver</string>
+    <string name="extreme_battery_saver_summary">Includes all changes listed above. Also pauses non-essential apps and their notifications.</string>
+    <string name="extreme_battery_saver_title">Extreme Battery Saver</string>
+    <string name="battery_saver_reminder_category">Reminders</string>
+    <string name="battery_saver_reminder_switch_summary">Get reminders when battery is low</string>
+    <string name="battery_saver_reminder_switch_title">Battery Saver reminders</string>
+    <string name="battery_saver_schedule_category">Schedule</string>
+    <string name="battery_saver_schedule_settings_title">Set a schedule</string>
+    <string name="battery_saver_schedule_switch_summary">Battery Saver turns on when battery falls to a level you set</string>
+    <string name="battery_saver_schedule_switch_title">Turn on based on battery level</string>
 </resources>
