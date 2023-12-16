@@ -33,6 +33,7 @@ android_library {
     ],
     manifest: "AndroidManifest.xml",
 
+    javacflags: ["-Adagger.fastInit=enabled"],
     kotlincflags: ["-Xjvm-default=enable"],
 
     plugins: ["dagger2-compiler"],
@@ -65,6 +66,7 @@ android_app {
         proguard_flags_files: ["proguard.flags"],
     },
 
+    javacflags: ["-Adagger.fastInit=enabled"],
     kotlincflags: ["-Xjvm-default=enable"],
 
     dxflags: ["--multi-dex"],

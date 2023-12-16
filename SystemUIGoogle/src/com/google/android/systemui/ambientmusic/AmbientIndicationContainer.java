@@ -222,7 +222,7 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
 
     public void onTextClick() {
         if (mOpenIntent != null) {
-            mCentralSurfaces.wakeUpIfDozing(SystemClock.uptimeMillis(), "AMBIENT_MUSIC_CLICK", PowerManager.WAKE_REASON_GESTURE);
+            mCentralSurfaces.wakeUpDeviceifDozing();
             if (mAmbientSkipUnlock) {
                 sendBroadcastWithoutDismissingKeyguard(mOpenIntent);
             } else {
@@ -233,7 +233,7 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
 
     private void onIconClick() {
         if (mFavoritingIntent != null) {
-            mCentralSurfaces.wakeUpIfDozing(SystemClock.uptimeMillis(), "AMBIENT_MUSIC_CLICK", PowerManager.WAKE_REASON_GESTURE);
+            mCentralSurfaces.wakeUpDeviceifDozing();
             sendBroadcastWithoutDismissingKeyguard(mFavoritingIntent);
             return;
         }
@@ -298,11 +298,11 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
         } else {
             z = false;
         }
-        ShadeViewController shadeViewController = mCentralSurfaces.getShadeViewController();
+        ShadeViewController shadeViewController = mCentralSurfaces.getNotificationPanelViewController();
         int top = getTop();
         NotificationPanelViewController notificationPanelViewController = (NotificationPanelViewController) shadeViewController;
         if (z) {
-            i = notificationPanelViewController.getNotificationStackScrollLayoutController().getNotificationStackScrollLayoutView().getBottom() - top;
+            i = notificationPanelViewController.getScrollerLayoutController().getNotificationStackScrollLayoutView().getBottom() - top;
         }
         if (notificationPanelViewController.getAmbientIndicationBottomPadding() != i) {
             notificationPanelViewController.setAmbientIndicationBottomPadding(i);

@@ -21,7 +21,7 @@ public final class BatteryUsageContentProvider extends ContentProvider {
     static List<BatteryDiffEntry> sCacheBatteryDiffEntries;
 
     /* renamed from: $r8$lambda$piQTleXoYTG2WU3nGzKMy-cQQZQ */
-    public static /* synthetic */ void m4598$r8$lambda$piQTleXoYTG2WU3nGzKMycQQZQ(MatrixCursor matrixCursor, BatteryDiffEntry batteryDiffEntry) {
+    public static void m4939$r8$lambda$piQTleXoYTG2WU3nGzKMycQQZQ(MatrixCursor matrixCursor, BatteryDiffEntry batteryDiffEntry) {
         lambda$getBatteryUsageData$0(matrixCursor, batteryDiffEntry);
     }
 
@@ -87,15 +87,15 @@ public final class BatteryUsageContentProvider extends ContentProvider {
         list.forEach(new Consumer() { // from class: com.google.android.settings.fuelgauge.BatteryUsageContentProvider$$ExternalSyntheticLambda0
             @Override // java.util.function.Consumer
             public final void accept(Object obj) {
-                BatteryUsageContentProvider.m4598$r8$lambda$piQTleXoYTG2WU3nGzKMycQQZQ(matrixCursor, (BatteryDiffEntry) obj);
+                BatteryUsageContentProvider.m4939$r8$lambda$piQTleXoYTG2WU3nGzKMycQQZQ(matrixCursor, (BatteryDiffEntry) obj);
             }
         });
         Log.d("BatteryUsageContentProvider", "usage data count:" + matrixCursor.getCount());
         return matrixCursor;
     }
 
-    public static /* synthetic */ void lambda$getBatteryUsageData$0(MatrixCursor matrixCursor, BatteryDiffEntry batteryDiffEntry) {
-        if (batteryDiffEntry.mBatteryHistEntry == null || batteryDiffEntry.getPercentage() == 0.0d) {
+    public static void lambda$getBatteryUsageData$0(MatrixCursor matrixCursor, BatteryDiffEntry batteryDiffEntry) {
+        if (batteryDiffEntry.isSystemEntry() || batteryDiffEntry.getPercentage() == 0.0d) {
             return;
         }
         addUsageDataRow(matrixCursor, batteryDiffEntry);
@@ -107,6 +107,6 @@ public final class BatteryUsageContentProvider extends ContentProvider {
             Log.w("BatteryUsageContentProvider", "no package name found for\n" + batteryDiffEntry);
             return;
         }
-        matrixCursor.addRow(new Object[]{new Long(batteryDiffEntry.mBatteryHistEntry.mUserId), packageName, new Double(batteryDiffEntry.getPercentage()), new Long(batteryDiffEntry.mForegroundUsageTimeInMs), new Long(batteryDiffEntry.mBackgroundUsageTimeInMs)});
+        matrixCursor.addRow(new Object[]{Long.valueOf(batteryDiffEntry.mUserId), packageName, Double.valueOf(batteryDiffEntry.getPercentage()), Long.valueOf(batteryDiffEntry.mForegroundUsageTimeInMs), Long.valueOf(batteryDiffEntry.mBackgroundUsageTimeInMs)});
     }
 }
