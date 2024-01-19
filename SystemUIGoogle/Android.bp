@@ -27,8 +27,8 @@ android_library {
         "touchcontext-lib",
         "googlebattery-lib",
         "nga-lib",
-        "elmyra-lib",
         "columbus-lib",
+        "google-battery",
         "vendor.google.google_battery-V1-java",
     ],
     manifest: "AndroidManifest.xml",
@@ -72,7 +72,6 @@ android_app {
     dxflags: ["--multi-dex"],
     required: [
         "privapp_whitelist_com.android.systemui",
-        "wmshell.protolog.json.gz",
     ],
     overrides: [
         "SystemUI",
