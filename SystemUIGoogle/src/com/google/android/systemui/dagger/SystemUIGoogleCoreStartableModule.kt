@@ -63,7 +63,6 @@ import com.android.systemui.volume.VolumeUI
 import com.android.systemui.wallpapers.dagger.WallpaperModule
 import com.android.systemui.wmshell.WMShell
 
-import com.google.android.systemui.theme.ThemeOverlayControllerGoogle
 import com.google.android.systemui.GoogleServices
 import com.google.android.systemui.smartspace.KeyguardSmartspaceStartable
 
@@ -206,7 +205,7 @@ abstract class SystemUIGoogleCoreStartableModule {
     @Binds
     @IntoMap
     @ClassKey(ThemeOverlayController::class)
-    abstract fun bindThemeOverlayControllerGoogle(sysui: ThemeOverlayControllerGoogle): CoreStartable
+    abstract fun bindThemeOverlayController(sysui: ThemeOverlayController): CoreStartable
 
     /** Inject into ToastUI.  */
     @Binds
